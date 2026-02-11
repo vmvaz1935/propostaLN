@@ -1539,9 +1539,186 @@
                 transform: translateY(0);
             }
         }
+
+        /* Password Protection - Modern Design */
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f172a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .password-overlay.hidden {
+            display: none;
+        }
+
+        .password-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .password-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .password-container p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1em;
+        }
+
+        .password-input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--text-dark);
+            box-sizing: border-box;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .password-submit {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--gold-accent));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .password-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .password-submit:active {
+            transform: translateY(0);
+        }
+
+        .password-error {
+            color: #dc2626;
+            font-size: 0.9em;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .password-error.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .main-content {
+            display: none;
+        }
+
+        .main-content.visible {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .password-container {
+                padding: 2rem 1.5rem;
+                border-radius: 16px;
+            }
+
+            .password-container h2 {
+                font-size: 1.6em;
+            }
+
+            .password-input {
+                padding: 0.9rem 1rem;
+                font-size: 0.95em;
+            }
+
+            .password-submit {
+                padding: 0.9rem 1.5rem;
+                font-size: 0.95em;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Password Protection Overlay -->
+    <div class="password-overlay" id="passwordOverlay">
+        <div class="password-container">
+            <h2>🔒 Acesso Restrito</h2>
+            <p>Digite a senha para acessar o conteúdo</p>
+            <form id="passwordForm" onsubmit="checkPassword(event)">
+                <div class="password-input-group">
+                    <input 
+                        type="password" 
+                        id="passwordInput" 
+                        class="password-input" 
+                        placeholder="Digite a senha"
+                        autocomplete="off"
+                        autofocus
+                    >
+                    <div class="password-error" id="passwordError">
+                        Senha incorreta. Tente novamente.
+                    </div>
+                </div>
+                <button type="submit" class="password-submit">
+                    Acessar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
     <!-- Header -->
     <header>
         <nav>
