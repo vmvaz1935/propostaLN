@@ -2407,6 +2407,52 @@
             </p>
         </div>
     </footer>
+    </div>
+    <script>
+        // Password Protection
+        const CORRECT_PASSWORD = 'nobre';
+        const passwordOverlay = document.getElementById('passwordOverlay');
+        const mainContent = document.getElementById('mainContent');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordError = document.getElementById('passwordError');
+        const passwordForm = document.getElementById('passwordForm');
+
+        // Check if already authenticated
+        if (sessionStorage.getItem('authenticated') === 'true') {
+            showContent();
+        }
+
+        function checkPassword(event) {
+            event.preventDefault();
+            const enteredPassword = passwordInput.value.trim();
+            
+            if (enteredPassword === CORRECT_PASSWORD) {
+                sessionStorage.setItem('authenticated', 'true');
+                showContent();
+            } else {
+                passwordError.classList.add('show');
+                passwordInput.value = '';
+                passwordInput.focus();
+                setTimeout(() => {
+                    passwordError.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        function showContent() {
+            passwordOverlay.classList.add('hidden');
+            mainContent.classList.add('visible');
+        }
+
+        // Allow Enter key to submit
+        if (passwordInput) {
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword(e);
+                }
+            });
+        }
+    </script>
     <script>
         // Smooth scroll para links de navegação
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
